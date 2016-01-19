@@ -23,12 +23,30 @@ app.use(bodyParser.json());
 //==================================
 // Socket io
 //==================================
+io.on('connection', function (socket){
+    console.log('A user joined');
 
+    socket.on('disconnect', function (){
+        console.log('User disconnected');
+        socket.emit('event', 'User disconnected');
+    });
+
+    socket.on('message', function (message){
+        io.sockets.emit('broadcast', message);
+    });
+});
 
 //==================================
 // API calls
 //==================================
 app.use(require('./routes'));
+
+app.get('*', function(req, res){
+
+    res.status(200);
+    res.sendFile('index.html');
+
+});
 
 module.exports = {
     app: app,
