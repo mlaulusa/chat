@@ -3,3 +3,6 @@ app/bower_components
 *.log
 config.js
 *.pem
+*.idea
+*.csr
+*.db

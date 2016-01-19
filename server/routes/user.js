@@ -1,4 +1,4 @@
-var router = require('express').Route();
+var router = require('express').Router();
 
 //=======================================
 // Route /user

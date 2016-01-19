@@ -5,12 +5,11 @@ var express = require('express'),
     methodOverride = require('method-override'),
     fs = require('fs'),
     server = require('https').createServer({
-        key: fs.readFileSync: './server/public/privatekey.pem',
-        cert: fs.readFileSync: './server/public/certificate.pem'
-    }),
+        key: fs.readFileSync('./server/public/privatekey.pem'),
+        cert: fs.readFileSync('./server/public/certificate.pem')
+    }, app),
     io = require('socket.io').listen(server);
 
-require('./logs');
 require('./db');
 
 app.use(express.static('app'));
@@ -29,7 +28,7 @@ app.use(bodyParser.json());
 //==================================
 // API calls
 //==================================
-require('./routes');
+app.use(require('./routes'));
 
 module.exports = {
     app: app,
