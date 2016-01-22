@@ -1,0 +1,4 @@
+<ul>
+    <li ng-repeat="m in messages track by $index">{{m}}</li>
+</ul>
+<input type="text" ng-model="message" ng-enter="sendMessage()">
