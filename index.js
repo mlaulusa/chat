@@ -1,6 +1,6 @@
 var express = require('express'),
     app = express(),
-    config = require('./config'),
+    config = require('./server/config'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     fs = require('fs'),
@@ -8,9 +8,12 @@ var express = require('express'),
         key: fs.readFileSync('./server/public/privatekey.pem'),
         cert: fs.readFileSync('./server/public/certificate.pem')
     }, app),
-    io = require('socket.io').listen(server);
+    io = require('socket.io').listen(server),
+    log = require('./server/logs'),
+    routes = require('./server/routes'),
+    middle = require('./server/middleware');
 
-require('./db');
+require('./server/db/index');
 
 app.use(express.static('app'));
 app.use(express.static('server/public'));
@@ -19,6 +22,11 @@ app.use(bodyParser.urlencoded({
     'extended': true
 }));
 app.use(bodyParser.json());
+
+//==================================
+// Socket io
+//==================================
+middle(app);
 
 //==================================
 // Socket io
@@ -39,16 +47,18 @@ io.on('connection', function (socket){
 //==================================
 // API calls
 //==================================
-app.use(require('./routes'));
+app.use('/v1', routes);
 
-app.get('*', function(req, res){
+//==================================
+// Angular app
+//==================================
+app.get('/', function (req, res){
 
-    res.status(200);
+    log.info('[%s] %s GET %s', req.ip, req.protocol, req.path);
     res.sendFile('index.html');
 
 });
 
-module.exports = {
-    app: app,
-    server: server
-};
+server.listen(config.app.port, function (){
+    log.info('Server listening on port %d in %s mode', config.app.port, app.get('env'));
+});

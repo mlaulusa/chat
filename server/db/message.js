@@ -123,7 +123,7 @@ module.exports = {
                 }
             }).close(closeDatabase());
         });
-    }
+    },
 
     readAllByUser: function(user){
 

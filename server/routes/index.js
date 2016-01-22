@@ -1,12 +1,11 @@
-var message = require('./message'),
-    user = require('./user'),
+var router = require('express').Router(),
+    message = require('./message'),
     room = require('./room'),
-    router = require('express').Router();
+    user = require('./user');
 
-router.all('/api');
-
-router.route('/room', room);
-router.route('/user', user);
-router.route('/message', message);
+router.use('/message', message);
+router.use('/room', room);
+router.use('/user', user);
 
 module.exports = router;
+

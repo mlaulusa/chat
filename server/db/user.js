@@ -23,212 +23,212 @@ var closeDatabase = function (err){
 
 module.exports = {
 
-  authenticate: function(user){
+    authenticate: function (user){
 
-    return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject){
 
-        var db = setup();
+            var db = setup();
 
-        var statement = ('SELECT * FROM users WHERE username = "$username"').replace('$username', user.username);
+            var statement = ('SELECT * FROM users WHERE username = "$username"').replace('$username', user.username);
 
-        db.get(statement, function (err, row){
+            db.get(statement, function (err, row){
 
-            if(err){
-                log.debug('Error at "%s"', statement);
-                log.error(err);
-                reject(Error(err));
-            } else if(row){
-                log.info('Found %s in users table', user.username);
-                log.info(row);
+                if(err){
+                    log.debug('Error at "%s"', statement);
+                    log.error(err);
+                    reject(Error(err));
+                } else if(row){
+                    log.info('Found %s in users table', user.username);
+                    log.info(row);
 
-                bcrypt.compare(user.password, row.password, function (err, match){
+                    bcrypt.compare(user.password, row.password, function (err, match){
 
-                    if(err){
-                        log.debug('Error comparing passwords for %s', user.username);
-                        log.error(err);
-                        reject(Error(err));
-                    } else if(match){
-                        log.info('Matched password for %s', user.username);
-                        resolve(row);
-                    } else {
-                        var msg = 'Passwords did not match';
-                        log.info(msg);
-                        reject(Error(msg));
-                    }
+                        if(err){
+                            log.debug('Error comparing passwords for %s', user.username);
+                            log.error(err);
+                            reject(Error(err));
+                        } else if(match){
+                            log.info('Matched password for %s', user.username);
+                            resolve(row);
+                        } else {
+                            var msg = 'Passwords did not match';
+                            log.info(msg);
+                            reject(Error(msg));
+                        }
 
-                });
-            } else {
-                var msg = ('$username was not found').replace('$username', user.username);
-                log.info(msg);
-                reject(Error(msg));
-            }
+                    });
+                } else {
+                    var msg = ('$username was not found').replace('$username', user.username);
+                    log.info(msg);
+                    reject(Error(msg));
+                }
 
-        }).close(closeDatabase());
+            }).close(closeDatabase());
 
-    });
+        });
 
-  },
+    },
 
-  createUser: function (user){
+    createUser: function (user){
 
-      return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject){
 
-          var db = setup();
+            var db = setup();
 
-          bcrypt.genSalt(10, function (err, salt){
-              if(err){
+            bcrypt.genSalt(10, function (err, salt){
+                if(err){
 
-                  log.debug('Error generating bcrypt salt');
-                  log.error(err);
-                  reject(err);
+                    log.debug('Error generating bcrypt salt');
+                    log.error(err);
+                    reject(err);
 
-              } else {
+                } else {
 
-                  bcrypt.hash(user.password, salt, function (err, hash){
-                      if(err){
+                    bcrypt.hash(user.password, salt, function (err, hash){
+                        if(err){
 
-                          log.debug('Error generating hash from salt');
-                          log.error(err);
-                          reject(err);
+                            log.debug('Error generating hash from salt');
+                            log.error(err);
+                            reject(err);
 
-                      } else {
+                        } else {
 
-                          db.run('INSERT INTO users (username, password, created_on) VALUES ($username, $password, $created_on)', {
-                              $username: user.username,
-                              $password: hash,
-                              $created_on: user.created_on
-                          }, function (err){
-                              if(err){
+                            db.run('INSERT INTO users (username, password, created_on) VALUES ($username, $password, $created_on)', {
+                                $username: user.username,
+                                $password: hash,
+                                $created_on: user.created_on
+                            }, function (err){
+                                if(err){
 
-                                  log.debug('Error at "INSERT INTO users (username, password, created_on) VALUES (%s, %s %s)', user.username, user.password, user.created_on);
-                                  log.error(err);
-                                  reject(err);
+                                    log.debug('Error at "INSERT INTO users (username, password, created_on) VALUES (%s, %s %s)', user.username, user.password, user.created_on);
+                                    log.error(err);
+                                    reject(err);
 
-                              } else {
+                                } else {
 
-                                  log.info('Successfully inserted %s into users table', user.username);
-                                  resolve();
+                                    log.info('Successfully inserted %s into users table', user.username);
+                                    resolve();
 
-                              }
-                          }).close(closeDatabase());
-                      }
-                  });
-              }
-          });
-      });
-  },
+                                }
+                            }).close(closeDatabase());
+                        }
+                    });
+                }
+            });
+        });
+    },
 
-  readAll: function(){
+    readAll: function (){
 
-    return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject){
 
-        var db = setup();
+            var db = setup();
 
-        var statement = 'SELECT * FROM users';
+            var statement = 'SELECT * FROM users';
 
-        db.all(statement, function (err, row){
-            if(err){
+            db.all(statement, function (err, row){
+                if(err){
 
-                log.debug('Error at "%s"', statement);
-                log.error(err);
-                reject(err);
+                    log.debug('Error at "%s"', statement);
+                    log.error(err);
+                    reject(err);
 
-            } else {
-                resolve(row);
-            }
+                } else {
+                    resolve(row);
+                }
 
-        }).close(closeDatabase());
-    });
-  },
+            }).close(closeDatabase());
+        });
+    },
 
-  readByID: function(id){
+    readByID: function (id){
 
-    return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject){
 
-        var db = setup();
+            var db = setup();
 
-        var statement = ('SELECT * FROM users WHERE _id = "$id"').replace('$id', id);
+            var statement = ('SELECT * FROM users WHERE _id = "$id"').replace('$id', id);
 
-        db.get(statement, function (err, row){
-            if(err){
+            db.get(statement, function (err, row){
+                if(err){
 
-                log.debug('Error at "%s"', statement);
-                log.error(err);
-                reject(err);
+                    log.debug('Error at "%s"', statement);
+                    log.error(err);
+                    reject(err);
 
-            } else {
-                resolve(row);
-            }
-        }).close(closeDatabase());
-    });
-  },
+                } else {
+                    resolve(row);
+                }
+            }).close(closeDatabase());
+        });
+    },
 
-  readByUsername: function(username){
+    readByUsername: function (username){
 
-    return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject){
 
-        var db = setup();
+            var db = setup();
 
-        var statement = ('SELECT * FROM users WHERE username = "$username"').replace('$username', username);
+            var statement = ('SELECT * FROM users WHERE username = "$username"').replace('$username', username);
 
-        db.get(statement, function (err, row){
-            if(err){
+            db.get(statement, function (err, row){
+                if(err){
 
-                log.debug('Error at "%s"', statement);
-                log.error(err);
-                reject(err);
+                    log.debug('Error at "%s"', statement);
+                    log.error(err);
+                    reject(err);
 
-            } else {
-                resolve(row);
-            }
+                } else {
+                    resolve(row);
+                }
 
-        }).close(closeDatabase());
-      });
-  },
+            }).close(closeDatabase());
+        });
+    },
 
-  deleteByID: function(id){
+    deleteByID: function (id){
 
-    return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject){
 
-        var db = setup();
+            var db = setup();
 
-        var statement = ('DELETE FROM users WHERE _id = "$id"').replace('$id', id);
+            var statement = ('DELETE FROM users WHERE _id = "$id"').replace('$id', id);
 
-        db.run(statement, function (err){
-            if(err){
+            db.run(statement, function (err){
+                if(err){
 
-                log.debug('Error at "%s"', statement);
-                log.error(err);
-                reject(err);
+                    log.debug('Error at "%s"', statement);
+                    log.error(err);
+                    reject(err);
 
-            } else {
-                resolve();
-            }
-        }).close(closeDatabase());
-    });
-  },
+                } else {
+                    resolve();
+                }
+            }).close(closeDatabase());
+        });
+    },
 
-  deleteByUsername: function(username){
+    deleteByUsername: function (username){
 
-    return new Promise(function (resolve, reject){
+        return new Promise(function (resolve, reject){
 
-        var db = setup();
+            var db = setup();
 
-        var statement = ('DELETE FROM users WHERE username = "$username"').replace('$username', username);
+            var statement = ('DELETE FROM users WHERE username = "$username"').replace('$username', username);
 
-        db.run(statement, function (err){
-            if(err){
+            db.run(statement, function (err){
+                if(err){
 
-                log.debug('Error at "%s"', statement);
-                log.error(err);
-                reject(err);
+                    log.debug('Error at "%s"', statement);
+                    log.error(err);
+                    reject(err);
 
-            } else {
-                log.info('Successfully deleted %s', username);
-                resolve()
-            }
-        }).close(closeDatabase());
-    });
-  }
+                } else {
+                    log.info('Successfully deleted %s', username);
+                    resolve()
+                }
+            }).close(closeDatabase());
+        });
+    }
 
-}
+};

@@ -2,12 +2,12 @@
   "name": "chat",
   "version": "0.0.1",
   "description": "A chat application",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Implement this later\"",
     "preinstall": "bower install",
     "prestart": "npm install",
-    "start": "node_modules/.bin/nodemon main.js | node_modules/.bin/bunyan -o short"
+    "start": "node_modules/.bin/nodemon index.js | node_modules/.bin/bunyan -o short"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
     "bunyan": "^1.5.1",
     "express": "^4.13.3",
     "method-override": "^2.3.5",
+    "path": "^0.12.7",
     "socket.io": "^1.4.4",
     "sqlite3": "^3.1.1"
   },

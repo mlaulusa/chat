@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Chat</title>
+    <meta charset="UTF-8"/>
+    <title>Chat</title>
 </head>
 
-<body>
+<body ng-app="chatty">
+
+<div class="container">
+    <ui-view></ui-view>
+</div>
 
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/ngstorage/ngStorage.js"></script>
@@ -15,8 +19,8 @@
 <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/app.js"></script>
-<script src="js/services.js"></script>
-<script src="js/controllers.js"></script>
-<script src="js/directives.js"></script>
+<script src="js/service.js"></script>
+<script src="js/controller.js"></script>
+<script src="js/directive.js"></script>
 </body>
 </html>

@@ -1,77 +1,127 @@
 var router = require('express').Router(),
+    message = require('../db/message'),
     log = require('../logs');
 
-//=====================================
-// Route /message
-//=====================================
+//===========================================
+// route /message
+//===========================================
 router.route('')
-.get(function(req, res){
+    .all(function(req, res, next){
 
-    log.info('[%s] %s GET %s', req.ip, req.protocol, req.path);
+        next();
+    })
 
-})
-.post(function(req, res){
+    .get(function(req, res){
+        if(!req.query.empty){
 
-    log.info('[%s] %s POST %s', req.ip, req.protocol, req.path);
+            if(req.query.room){
 
-})
-.put(function(req, res){
+                message.readAllByRoom(req.query.room).then(function(success){
 
-    log.info('[%s] %s PUT %s', req.ip, req.protocol, req.path);
+                    res.status(200);
+                    res.json(success);
 
-})
-delete(function(req, res){
+                }, function(error){
 
-    log.info('[%s] %s DELETE %s', req.ip, req.protocol, req.path);
+                    res.status(401);
+                    res.json(error);
 
-});
+                });
 
-//=====================================
-// Route /message/:id
-//=====================================
+            } else if(req.query.username){
+
+                message.readAllByUser(req.query.username).then(function(success){
+
+                    res.status(200);
+                    res.json(success);
+
+                }, function(error){
+
+                    res.status(401);
+                    res.json(error);
+
+                });
+
+            } else {
+
+                log.warn('There is a query parameter but it does not match any query rules');
+
+            }
+
+        } else {
+
+            message.readAll().then(function(success){
+
+                res.status(200);
+                res.json(success);
+
+            }, function(error){
+
+                res.status(401);
+                res.json(error)
+
+            });
+        }
+    })
+
+    .post(function(req, res){
+
+        message.createMessage(req.body.message).then(function(success){
+
+            res.status(200);
+            res.json(success);
+
+        }, function(error){
+
+            res.status(401);
+            res.json(error);
+
+        });
+    })
+
+    .put()
+
+    .delete();
+
 router.route('/:id')
-.get(function(req, res){
+    .all(function(req, res, next){
 
-    log.info('[%s] %s GET %s', req.ip, req.protocol, req.path);
+        next();
+    })
 
-})
-.post(function(req, res){
+    .get(function(req, res){
 
-    log.info('[%s] %s POST %s', req.ip, req.protocol, req.path);
+        message.readByID(req.params.id).then(function(success){
 
-})
-.put(function(req, res){
+            res.status(200);
+            res.json(success);
 
-    log.info('[%s] %s PUT %s', req.ip, req.protocol, req.path);
+        }, function(error){
 
-})
-delete(function(req, res){
+            res.status(401);
+            res.json(error);
 
-    log.info('[%s] %s DELETE %s', req.ip, req.protocol, req.path);
+        });
 
-});
+    })
 
-//=====================================
-// Route /message/:id
-//=====================================
-router.route('')
-.get(function(req, res){
+    .post()
 
-    log.info('[%s] %s GET %s', req.ip, req.protocol, req.path);
+    .put()
 
-})
-.post(function(req, res){
+    .delete(function(req, res){
 
-    log.info('[%s] %s POST %s', req.ip, req.protocol, req.path);
+        message.deleteByID(id).then(function(success){
 
-})
-.put(function(req, res){
+            res.status(200);
+            res.json(success);
 
-    log.info('[%s] %s PUT %s', req.ip, req.protocol, req.path);
+        }, function(error){
 
-})
-delete(function(req, res){
+            res.status(401);
+            res.json(error);
 
-    log.info('[%s] %s DELETE %s', req.ip, req.protocol, req.path);
+        });
+    });
 
-});
+module.exports = router;

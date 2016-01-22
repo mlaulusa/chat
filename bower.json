@@ -11,10 +11,10 @@
   "private": true,
   "dependencies": {
     "angular": "~1.4.8",
-    "angular-ui-bootstrap": "~1.1.0",
     "angular-socket-io": "~0.7.0",
     "angular-ui-notification": "~0.1.0",
     "angular-ui-router": "~0.2.15",
-    "ngstorage": "ng-storage#~0.4.2"
+    "ngstorage": "ng-storage#~0.4.2",
+    "angular-bootstrap": "~1.1.0"
   }
 }
