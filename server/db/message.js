@@ -1,4 +1,4 @@
-var sqlite3 = require('sqlite3'),
+var sqlite3 = require('sqlite3').verbose(),
     log = require('../logs');
 
 var setup = function (){

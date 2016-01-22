@@ -6,7 +6,7 @@ var log = require('../logs');
  * parameters to negotiate.  The function will mutate query.queries to true if it is empty and false if it is not
  *
  * @method isEmpty
- * @obj {Object} The req.query object
+ * @param {Object} obj The req.query object
  */
 
 var isEmpty = function (obj){

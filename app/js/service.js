@@ -10,7 +10,7 @@ angular.module('chatty.services', [])
         return {
 
             getAll: function (){
-                return $http.get('/api/messages').then(function (success){
+                return $http.get('/v1/message').then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -18,7 +18,7 @@ angular.module('chatty.services', [])
             },
 
             getByUsername: function (username){
-                return $http.get(('/api/messages/user/$username').replace('$username', username)).then(function (success){
+                return $http.get(('/v1/message?username=$username').replace('$username', username)).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -26,7 +26,7 @@ angular.module('chatty.services', [])
             },
 
             getByID: function (id){
-                return $http.get(('/api/message/$id').replace('$id', id)).then(function (success){
+                return $http.get(('/v1/message/$id').replace('$id', id)).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -34,7 +34,7 @@ angular.module('chatty.services', [])
             },
 
             getByRoom: function (room){
-                return $http.get(('/api/$room/messages').replace('$room', room)).then(function (success){
+                return $http.get(('/v1/message?room=$room').replace('$room', room)).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -42,7 +42,7 @@ angular.module('chatty.services', [])
             },
 
             saveMessage: function (message){
-                return $http.post('/api/message', message).then(function (success){
+                return $http.post('/v1/message', message).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -54,7 +54,7 @@ angular.module('chatty.services', [])
     .factory('UserFactory', ['$http', '$log', function ($http, $log){
         return {
             signIn: function (user){
-                return $http.post('/signin', user).then(function (success){
+                return $http.post('/v1/signin', user).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -67,7 +67,7 @@ angular.module('chatty.services', [])
         return {
 
             getAll: function (){
-                return $http.get('/api/rooms').then(function (success){
+                return $http.get('/v1/room').then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -75,7 +75,7 @@ angular.module('chatty.services', [])
             },
 
             getByRoom: function (room){
-                return $http.get(('/api/room/$room').replace('$room', room)).then(function (success){
+                return $http.get(('/v1/room?room=$room').replace('$room', room)).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -83,7 +83,7 @@ angular.module('chatty.services', [])
             },
 
             getByID: function (id){
-                return $http.get(('/api/room/id/$id').replace('$id', id)).then(function (success){
+                return $http.get(('/v1/room/$id').replace('$id', id)).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -91,7 +91,7 @@ angular.module('chatty.services', [])
             },
 
             createRoom: function (room){
-                return $http.post('/api/room', room).then(function (success){
+                return $http.post('/v1/room', room).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -99,7 +99,7 @@ angular.module('chatty.services', [])
             },
 
             updatePasswordByID: function (id, password){
-                return $http.put(('/api/room/id/$id').replace('$id', id), password).then(function (success){
+                return $http.put(('/v1/room/$id').replace('$id', id), password).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -107,7 +107,7 @@ angular.module('chatty.services', [])
             },
 
             updatePasswordByRoom: function (room, password){
-                return $http.put(('/api/room/$room').replace('$room', room), password).then(function (success){
+                return $http.put(('/v1/room?room=$room').replace('$room', room), password).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -115,7 +115,7 @@ angular.module('chatty.services', [])
             },
 
             deleteByID: function (id){
-                return $http.delete(('/api/room/id/$id').replace('$id', id)).then(function (success){
+                return $http.delete(('/v1/room/$id').replace('$id', id)).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;
@@ -123,7 +123,7 @@ angular.module('chatty.services', [])
             },
 
             deleteByRoom: function (room){
-                return $http.delete(('/api/room/$room').replace('$room', room)).then(function (success){
+                return $http.delete(('/v1/room?room=$room').replace('$room', room)).then(function (success){
                     return success.data;
                 }, function (err){
                     return err;

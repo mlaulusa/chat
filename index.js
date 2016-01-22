@@ -11,7 +11,7 @@ var express = require('express'),
     io = require('socket.io').listen(server),
     log = require('./server/logs'),
     routes = require('./server/routes'),
-    middle = require('./server/middleware');
+    middleware = require('./server/middleware');
 
 require('./server/db/index');
 
@@ -24,9 +24,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 //==================================
-// Socket io
+// chat server middleware
 //==================================
-middle(app);
+middleware(app);
 
 //==================================
 // Socket io

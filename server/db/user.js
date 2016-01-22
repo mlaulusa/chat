@@ -1,4 +1,4 @@
-var sqlite3 = require('sqlite3'),
+var sqlite3 = require('sqlite3').verbose(),
     bcrypt = require('bcrypt'),
     log = require('../logs');
 
@@ -100,7 +100,7 @@ module.exports = {
                             }, function (err){
                                 if(err){
 
-                                    log.debug('Error at "INSERT INTO users (username, password, created_on) VALUES (%s, %s %s)', user.username, user.password, user.created_on);
+                                    log.debug('Error at "INSERT INTO users (username, password, created_on) VALUES (%s, %s, %s)', user.username, user.password, user.created_on);
                                     log.error(err);
                                     reject(err);
 

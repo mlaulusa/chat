@@ -60,8 +60,6 @@ angular.module('chatty.controllers', [])
         $scope.signIn = function (){
             UserFactory.signIn({user: $scope.user}).then(function (data){
 
-                $log.info(data);
-                $log.info(new Date(data.created_on).toString());
                 $scope.$storage.username = data.username;
 
             });
@@ -71,7 +69,8 @@ angular.module('chatty.controllers', [])
     .controller('SignUpCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 
         $scope.signUp = function (){
-            return $http.post('/api/user', {user: $scope.user}).then(function (data){
+          $scope.user.created_on = new Date();
+            return $http.post('/v1/user', {user: $scope.user}).then(function (data){
                 $log.info(data);
             });
         }
